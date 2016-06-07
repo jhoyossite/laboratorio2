@@ -1,9 +1,9 @@
 function [xDataTrain,tDataTrain, xDataTest, tDataTest] = generatePartitions(setVal, Ntot, NtotC, xtot, ttot, rand)
     
     xDataTrain = zeros(Ntot - (Ntot/setVal), setVal*4);
-    tDataTrain = zeros(Ntot - (Ntot/setVal), setVal);
+    tDataTrain = zeros(Ntot - (Ntot/setVal), setVal*4);
     xDataTest  = zeros((Ntot/setVal), setVal*4);
-    tDataTest  = zeros((Ntot/setVal), setVal);
+    tDataTest  = zeros((Ntot/setVal), setVal*4);
 
     if rand == 0
         index      = randperm(Ntot);
@@ -51,23 +51,16 @@ function [xDataTrain,tDataTrain, xDataTest, tDataTest] = generatePartitions(setV
                 x1 = [];
                 t1 = [];
             else
-                x1 = [xtot(index(1:(NtotC/setVal)*(i-1)),:)
-                      xtot(index(1:(NtotC/setVal)*(i-1))+(NtotC),:)
-                      xtot(index(1:(NtotC/setVal)*(i-1))+(NtotC*2),:)];
-                t1 = [ttot(index(1:(NtotC/setVal)*(i-1)),:)
-                      ttot(index(1:(NtotC/setVal)*(i-1)) + (NtotC),:)
-                      ttot(index(1:(NtotC/setVal)*(i-1)) + (NtotC*2),:)];
+                x1 = [xtot(index(1:(Ntot/setVal)*(i-1)),:)
+                      
+                     ];
+                t1 = ttot(index(1:(Ntot/setVal)*(i-1)),:);
             end
-            size(x1)
-            size(x2)
+
             xDataTrain(:,(4*(i-1))+1:4*i) = [x1;x2];
-            xDataTest(:,(4*(i-1))+1:4*i)  = [xtot(index((NtotC/setVal)*(i-1)+1:(NtotC/setVal)*i),:)
-                                             xtot(index((NtotC/setVal)*(i-1)+1:(NtotC/setVal)*i)+(NtotC),:)
-                                             xtot(index((NtotC/setVal)*(i-1)+1:(NtotC/setVal)*i)+(NtotC*2),:)];
+            xDataTest(:,(4*(i-1))+1:4*i)  = xtot(index((Ntot/setVal)*(i-1)+1:(Ntot/setVal)*i),:);
             tDataTrain(:,i) = [t1;t2];
-            tDataTest(:,i)  = [ttot(index((NtotC/setVal)*(i-1)+1:(NtotC/setVal)*i),:)
-                               ttot(index((NtotC/setVal)*(i-1)+1:(NtotC/setVal)*i)+(NtotC),:)
-                               ttot(index((NtotC/setVal)*(i-1)+1:(NtotC/setVal)*i)+(NtotC*2),:)];
+            tDataTest(:,i)  = ttot(index((Ntot/setVal)*(i-1)+1:(Ntot/setVal)*i),:);
         end
     end
 end

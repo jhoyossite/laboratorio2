@@ -1,0 +1,21 @@
+clc;
+close all;
+clear;
+
+s = RandStream.create('mt19937ar','seed',1e3);
+RandStream.setGlobalStream(s);
+
+
+
+
+
+plotDataSet(x,t);
+
+% Se construyen las particiones
+NtotC = size(x(t==0,:), 1);
+partitions = 5;
+bin_width = NtotC/partitions;
+index_val = zeros(partitions,bin_width);
+index_train = zeros(partitions,NtotC - bin_width);
+index = randperm(NtotC);
+[index_val,index_train] = generatePartitions(index,NtotC,partitions,bin_width);
